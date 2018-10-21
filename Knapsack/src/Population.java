@@ -7,8 +7,7 @@ public class Population {
     private PriorityQueue<Knapsack> knapsacks;
 
     public Population(int initialSize, Knapsack startSack) {
-        this.knapsacks = new PriorityQueue<>(initialSize, new Comparator<Knapsack>() {
-            );
+        this.knapsacks = new PriorityQueue<>(initialSize, Knapsack.comparator());
         for (int i = 0; i < this.knapsacks.size(); i++) {
             this.knapsacks.add(startSack);
         }

@@ -47,15 +47,14 @@ public class Knapsack implements Organism<Item> {
         return sum;
     }
 
-    public Comparator<Item> comparator() {
-        return new Comparator<Item>() {
+    public static Comparator<Knapsack> comparator() {
+        return new Comparator<Knapsack>() {
             @Override
-            // Higher Value-Weight Ratio = "better"
-            public int compare(Item k1, Item k2) {
+            public int compare(Knapsack k1, Knapsack k2) {
                 int result = 0;
-                if (k1.getValToWeightRatio() < k2.getValToWeightRatio()) {
+                if (k1.getFitness() > k2.getFitness()) {
                     result = -1;
-                } else if (k1.getValToWeightRatio()> k2.getValToWeightRatio()) {
+                } else if (k1.getFitness() < k2.getFitness()) {
                     result = 1;
                 }
                 return result;

@@ -61,7 +61,7 @@ public class GeneticAlgo {
             toMutate.genome().get(randomIndex2).setUsed(toMutate.genome().get(randomIndex2).getAvailable()); // Bring down to max
         }
         
-        toMutate.genome().sort(toMutate.comparator()); // Sort based on Value-Weight ratio. Better Items have higher ratios and are therefore at the end.
+        toMutate.genome().sort(Item.comparator()); // Sort based on Value-Weight ratio. Better Items have higher ratios and are therefore at the end.
         
         // Weight checking
         while (toMutate.getWeight() > toMutate.getMaxWeight()) {
