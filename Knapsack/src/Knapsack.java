@@ -1,61 +1,65 @@
+
+import java.util.ArrayList;
+import java.util.Comparator;
+
 /**
- * Kenny Akers
- * Mr. Paige
- * Homework #
+ * Kenny Akers Mr. Paige Homework #
  *
  */
-public class Knapsack implements Organism{
+public class Knapsack implements Organism<Item> {
 
-    public Item[] items;
-    public final int maxWeight;
-    
-    public Knapsack(int maxWeight, int[] genome){
+    private ArrayList<Item> items;
+    private final int maxWeight;
+
+    public Knapsack(int maxWeight, ArrayList<Item> genome) {
         this.maxWeight = maxWeight;
-        
-        
+        this.items = genome;
     }
-    
-    public static void main(String[] args) {
-        
+
+    public int getMaxWeight() {
+        return this.maxWeight;
     }
-    
-    public int fitness(){
+
+    @Override
+    public int getFitness() {
         int sum = 0;
-        for(Item i : items){
-            sum += i.value * i.used;
+        for (Item item : items) {
+            sum += item.getValue() * item.getUsed();
         }
         return sum;
     }
-    
-    public int[] genome(){
-        int[] arr = new int[items.length];
-        for(int i = 0; i < arr.length; i++){
-            arr[i] = items[i].used;
-        }
-        return arr;
-    }
-    
-    public boolean isLegal(){
-        int sum = 0;
-        for(Item i : items)
-            sum += i.used * i.weight;
-        
-        return sum <= maxWeight;
+
+    @Override
+    public ArrayList<Item> genome() {
+        return items;
     }
 
-    public class Item{
-        String name;
-        public int value;
-        public int weight;
-        public int available;
-        public int used;
-        public Item(String name, int value, int weight, int available, int used){
-            this.name = name;
-            this.value = value;
-            this.weight = weight;
-            this.available = available;
-            this.used = used;
-        }
+    @Override
+    public boolean isLegal() {
+        return this.getWeight() <= this.maxWeight;
     }
-    
+
+    public int getWeight() {
+        int sum = 0;
+        for (Item item : items) {
+            sum += item.getWeight() * item.getUsed();
+        }
+        return sum;
+    }
+
+    public Comparator<Item> comparator() {
+        return new Comparator<Item>() {
+            @Override
+            // Higher Value-Weight Ratio = "better"
+            public int compare(Item k1, Item k2) {
+                int result = 0;
+                if (k1.getValToWeightRatio() < k2.getValToWeightRatio()) {
+                    result = -1;
+                } else if (k1.getValToWeightRatio()> k2.getValToWeightRatio()) {
+                    result = 1;
+                }
+                return result;
+            }
+        };
+    }
 }
