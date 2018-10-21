@@ -8,6 +8,7 @@
 public class GeneticAlgo {
 
     public static int NUM_ELITE_KNAPSACKS;
+    public static int TOURNAMENT_SELECTION_SIZE;
 
     private Knapsack initialKnapsack;
 
@@ -23,23 +24,51 @@ public class GeneticAlgo {
         return this.mutatePopulation(this.crossoverPopulation(population));
     }
 
+    // TODO:
     public Population crossoverPopulation(Population population) {
         Population crossoverPopulation = new Population(population.getKnapsacks().size(), this.initialKnapsack);
-        for (int i = 1; i < NUM_ELITE_KNAPSACKS; i++) { // Put the elite routes in the crossover population.
-            crossoverPopulation.getKnapsacks().add(population.getKnapsacks().poll());
+        for (int i = 0; i < NUM_ELITE_KNAPSACKS; i++) { // Put the elite routes in the crossover population.
+            Knapsack eliteKnapsack = population.getKnapsacks().poll();
+            eliteKnapsack.setElite(true);
+            crossoverPopulation.getKnapsacks().add(eliteKnapsack);
         }
-        for (int i = NUM_ELITE_KNAPSACKS; i < crossoverPopulation.getRoutes().size(); i++) {
+        for (int i = NUM_ELITE_KNAPSACKS; i < crossoverPopulation.getKnapsacks().size(); i++) {
             // Now for the rest of the population, use Tournament Selection to select the best.
             // The route at index 0 should be the fittest because we're sorting by fitness.
-            Route route1 = this.selectPopulation(population).getRoutes().get(0);
-            Route route2 = this.selectPopulation(population).getRoutes().get(0);
-            crossoverPopulation.getRoutes().set(i, this.crossoverRoute(route1, route2));
+            Knapsack knapsack1 = this.selectPopulation(population).getKnapsacks().peek();
+            Knapsack knapsack2 = this.selectPopulation(population).getKnapsacks().peek();
+            knapsack1.setElite(false);
+            knapsack2.setElite(false);
+            crossoverPopulation.getKnapsacks().add(this.crossoverKnapsacks(knapsack1, knapsack2));
         }
         return crossoverPopulation;
     }
+    
+    
+    public Knapsack crossoverKnapsacks(Knapsack k1, Knapsack k2) {
+        Knapsack crossover = new Knapsack(k1.getMaxWeight(), k1.genome()); // Start with k1's genome (NOTE: k1 and k2's max weight should be the same).
+        
+        
+        return crossover;
+    }
+    
+    // TODO:
+    // Selects the population using Tournament Selection
+    public Population selectPopulation(Population population) {
+        Population tournament = new Population(TOURNAMENT_SELECTION_SIZE, this.initialKnapsack);
+        for (int i = 0; i < TOURNAMENT_SELECTION_SIZE; i++) {
+            //tournament.getKnapsacks().add(i, population.getRoutes().get((int) (Math.random() * population.getKnapsacks().size())));
+        }
+        return tournament;
+    }
 
     public Population mutatePopulation(Population population) {
-
+        for (Knapsack sack : population.getKnapsacks()) {
+            if(!sack.isElite()) { // If it isn't an elite sack, mutate it.
+                this.mutateKnapsack(sack);
+            }
+        }
+        return population;
     }
 
     public Knapsack mutateKnapsack(Knapsack toMutate) {
@@ -60,34 +89,18 @@ public class GeneticAlgo {
         if (toMutate.genome().get(randomIndex2).getUsed() > toMutate.genome().get(randomIndex2).getAvailable()) { // Using too many of that item
             toMutate.genome().get(randomIndex2).setUsed(toMutate.genome().get(randomIndex2).getAvailable()); // Bring down to max
         }
-        
+
         toMutate.genome().sort(Item.comparator()); // Sort based on Value-Weight ratio. Better Items have higher ratios and are therefore at the end.
-        
+
         // Weight checking
-        while (toMutate.getWeight() > toMutate.getMaxWeight()) {
-            
-            
-            
-            
-        }
-            
-            
-            
-        int minValueToWeight = Integer.MAX_VALUE;
-        int indexOfMinValueToWeight = 0;
-        if (toMutate.getWeight() > toMutate.getMaxWeight()) {
-            // Find least important/useful item
-            for (int i = 0; i < toMutate.genome().size(); i++) {
-                int ratio = toMutate.genome().get(i).getValue() / toMutate.genome().get(i).getWeight();
-                if (ratio < minValueToWeight) {
-                    minValueToWeight = ratio;
-                    indexOfMinValueToWeight = i;
-                }
+        for (Item item : toMutate.genome()) { // For each item (worst first)
+            while (item.getUsed() > 0 && toMutate.getWeight() > toMutate.getMaxWeight()) {
+                item.setUsed(item.getUsed() - 1); // Decrement the amount of that item
             }
-            
-            int weightDelta = toMutate.getMaxWeight() - toMutate.getWeight();
-            int quantityDelta = weightDelta / toMutate.genome().get(indexOfMinValueToWeight).getUsed();
         }
+
+        // At this point, we should have a valid (quantity and weight), mutated Knapsack 
+        return toMutate;
     }
 
 }

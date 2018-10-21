@@ -10,14 +10,24 @@ public class Knapsack implements Organism<Item> {
 
     private ArrayList<Item> items;
     private final int maxWeight;
+    private boolean isElite;
 
     public Knapsack(int maxWeight, ArrayList<Item> genome) {
         this.maxWeight = maxWeight;
         this.items = genome;
+        this.isElite = false;
     }
 
     public int getMaxWeight() {
         return this.maxWeight;
+    }
+    
+    public void setElite(boolean value) {
+        this.isElite = value;
+    }
+    
+    public boolean isElite() {
+        return this.isElite;
     }
 
     @Override
