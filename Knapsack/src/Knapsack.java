@@ -2,10 +2,6 @@
 import java.util.ArrayList;
 import java.util.Comparator;
 
-/**
- * Kenny Akers Mr. Paige Homework #
- *
- */
 public class Knapsack implements Organism<Item> {
 
     private ArrayList<Item> items;
@@ -21,11 +17,11 @@ public class Knapsack implements Organism<Item> {
     public int getMaxWeight() {
         return this.maxWeight;
     }
-    
+
     public void setElite(boolean value) {
         this.isElite = value;
     }
-    
+
     public boolean isElite() {
         return this.isElite;
     }

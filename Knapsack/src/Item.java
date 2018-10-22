@@ -1,11 +1,8 @@
 
 import java.util.Comparator;
 
-
 /**
- * Kenny Akers
- * Mr. Paige
- * Homework #
+ * Kenny Akers Mr. Paige Homework #
  *
  */
 public class Item {
@@ -47,11 +44,11 @@ public class Item {
     public void setUsed(int used) {
         this.used = used;
     }
-    
+
     public double getValToWeightRatio() {
         return this.getValue() / this.getWeight();
     }
-    
+
     public static Comparator<Item> comparator() {
         return new Comparator<Item>() {
             @Override
@@ -60,7 +57,7 @@ public class Item {
                 int result = 0;
                 if (k1.getValToWeightRatio() < k2.getValToWeightRatio()) {
                     result = -1;
-                } else if (k1.getValToWeightRatio()> k2.getValToWeightRatio()) {
+                } else if (k1.getValToWeightRatio() > k2.getValToWeightRatio()) {
                     result = 1;
                 }
                 return result;

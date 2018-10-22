@@ -12,7 +12,7 @@ public class Population {
             this.knapsacks.add(startSack);
         }
     }
-    
+
     public Population(int initialSize, PriorityQueue<Knapsack> startKnapsacks) {
         this.knapsacks = new PriorityQueue<>(initialSize, new Comparator<Knapsack>() {
             @Override
