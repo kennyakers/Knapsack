@@ -67,4 +67,38 @@ public class Knapsack implements Organism<Item> {
             }
         };
     }
+
+    @Override
+    public String toString() {
+        String returnable = "[";
+        for (Item item : this.items) {
+            returnable += (item.getName() + ": " + item.getUsed() + " | ");
+        }
+
+        return returnable + "]";
+    }
+    
+    public void checkKnapsack() {
+        for (Item item : this.genome()) {
+            if (item.getUsed() > item.getAvailable()) { // Using too many of that item
+                if (GeneticAlgo.VERBOSE) {
+                    System.out.println("Using too many of " + item.getName() + ": Used = " + item.getUsed() + ", Available = " + item.getAvailable());
+                }
+                item.setUsed(item.getAvailable()); // Bring down to max
+            }
+        }
+
+        this.genome().sort(Item.comparator()); // Sort based on Value-Weight ratio. Better Items have higher ratios and are therefore at the end.
+        for (Item item : this.genome()) { // For each item (worst first)
+            while (item.getUsed() > 0 && this.getWeight() > this.getMaxWeight()) {
+                if (GeneticAlgo.VERBOSE) {
+                    System.out.print("OVERWEIGHT: Current: " + this.getWeight() + " | Max: " + this.getMaxWeight() + ". Decreasing quantity of " + item.getName() + " to " + (item.getUsed() - 1));
+                }
+                item.setUsed(item.getUsed() - 1); // Decrement the amount of that item
+                if (GeneticAlgo.VERBOSE) {
+                    System.out.println(". New weight: " + this.getWeight());
+                }
+            }
+        }
+    }
 }

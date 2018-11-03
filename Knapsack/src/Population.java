@@ -1,38 +1,38 @@
 
-import java.util.Comparator;
-import java.util.PriorityQueue;
+import java.util.ArrayList;
 
 public class Population {
 
-    private PriorityQueue<Knapsack> knapsacks;
+    private ArrayList<Knapsack> knapsacks;
 
     public Population(int initialSize, Knapsack startSack) {
-        this.knapsacks = new PriorityQueue<>(initialSize, Knapsack.comparator());
-        for (int i = 0; i < this.knapsacks.size(); i++) {
+        //System.out.println("Start sack: " + startSack.toString());
+        //System.out.println("END OF START SACK");
+        this.knapsacks = new ArrayList<>();
+        for (int i = 0; i < initialSize; i++) {
             this.knapsacks.add(startSack);
         }
+        //System.out.println("Knapsacks: " + this.knapsacks.toString());
     }
 
-    public Population(int initialSize, PriorityQueue<Knapsack> startKnapsacks) {
-        this.knapsacks = new PriorityQueue<>(initialSize, new Comparator<Knapsack>() {
-            @Override
-            public int compare(Knapsack k1, Knapsack k2) {
-                int result = 0;
-                if (k1.getFitness() > k2.getFitness()) {
-                    result = -1;
-                } else if (k1.getFitness() < k2.getFitness()) {
-                    result = 1;
-                }
-                return result;
-            }
-        });
+    public Population(int initialSize, ArrayList<Knapsack> startKnapsacks) {
+        this.knapsacks = new ArrayList<>();
         for (Knapsack k : startKnapsacks) {
             this.knapsacks.add(k);
         }
     }
 
-    public PriorityQueue<Knapsack> getKnapsacks() {
+    public ArrayList<Knapsack> getKnapsacks() {
         return this.knapsacks;
+    }
+
+    public void sortKnapsacksByFitness() {
+        this.knapsacks.sort(Knapsack.comparator());
+    }
+
+    @Override
+    public String toString() {
+        return this.knapsacks.toString();
     }
 
 }

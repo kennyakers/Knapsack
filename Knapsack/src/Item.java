@@ -46,7 +46,20 @@ public class Item {
     }
 
     public double getValToWeightRatio() {
-        return this.getValue() / this.getWeight();
+        double ratio = ((double) this.value) / ((double) this.weight);
+        if (GeneticAlgo.VERBOSE) {
+            System.out.println(this.name + "'s ratio: " + this.value + " / " + this.weight + " = " + ratio);
+        }
+        return ratio;
+    }
+
+    @Override
+    public String toString() {
+        return "Name: " + this.name + "\n\t"
+                + "Quantity: " + this.available + "\n\t"
+                + "Used: " + this.used + " \n\t"
+                + "Value: " + this.value + "\n\t"
+                + "Weight: " + this.weight + "\n";
     }
 
     public static Comparator<Item> comparator() {

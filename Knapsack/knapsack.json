@@ -1,0 +1,31 @@
+{
+    "Max Weight": 500
+
+    "Items": [
+      {
+        "Name": "Gold Bar",
+        "Quantity": 10,
+        "Value": 30,
+        "Weight": 40
+      },
+      {
+        "Name": "Silver Bar",
+        "Quantity": 20,
+        "Value": 15,
+        "Weight": 25
+      },
+      {
+        "Name": "Platinum Coin",
+        "Quantity": 50,
+        "Value": 10,
+        "Weight": 5
+      },
+      {
+        "Name": "Dollar Bill",
+        "Quantity": 100,
+        "Value": 1,
+        "Weight": 1
+      }
+    ]
+  
+}
